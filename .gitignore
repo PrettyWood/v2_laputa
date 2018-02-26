@@ -1,0 +1,19 @@
+# Python
+__pycache__
+
+# Pytest
+.cache
+.pytest_cache
+
+# Coverage
+.coverage
+
+# IDE
+.idea
+
+# Log
+*.log
+
+# Virtualenvs
+venv
+env
