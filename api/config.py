@@ -1,8 +1,8 @@
 import logging
 import os
 
-from .routes import add_routes
 from common.mongo_client import CustomMongoClient
+from .routes import add_routes
 
 
 class BaseConfig(object):
@@ -51,5 +51,5 @@ def configure_app(app):
     # Add routes
     add_routes(app)
     # Attach mongo client to the Flask application
-    app.mongo = CustomMongoClient(app.config['MONGO_URI'],
-                                  default_db=app.config['MONGO_DEFAULT_DB_NAME'])
+    app.mongo_client = CustomMongoClient(app.config['MONGO_URI'],
+                                         instance_db=app.config['MONGO_DEFAULT_DB_NAME'])

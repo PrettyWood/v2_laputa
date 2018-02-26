@@ -1,13 +1,13 @@
-from flask import jsonify, request, current_app
+from flask import g, jsonify, request
 
 
 def add_routes(app):
     @app.before_request
     def before_request():
-        app.mongo.small_app_id = request.view_args.pop('small_app_id', None)
-        app.mongo.stage = request.args.get('stage')
-        app.logger.debug(f'SMALL APP: {current_app.mongo.small_app_id}, '
-                         f'STAGE: {current_app.mongo.stage}')
+        g.small_app_id = request.view_args.pop('small_app_id', None)
+        g.stage = request.args.get('stage')
+        g.db = app.mongo_client.get_db(g.small_app_id)
+        app.logger.debug(f'SMALL APP: {g.small_app_id}, STAGE: {g.stage}')
 
     # GENERAL ROUTES
     @app.route('/')
@@ -16,7 +16,7 @@ def add_routes(app):
 
     @app.route('/small-apps')
     def get_small_apps():
-        all_small_apps = [x for x in app.mongo.db.small_app.find({}, {'_id': 0})]
+        all_small_apps = [x for x in g.db.small_app.find({}, {'_id': 0})]
         return jsonify(all_small_apps)
 
     # SMALL APP ROUTES
